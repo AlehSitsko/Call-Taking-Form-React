@@ -1,63 +1,67 @@
-import React, { useState } from 'react';
-import '../styles/print.css'; // Import print styles
+// CallForm.jsx
+import React, { useState, useEffect } from "react";
 
-const CallForm = () => {
+const CallForm = ({ onClearSignal }) => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    phone: '',
-    pickup: '',
-    dropoff: '',
-    additional: '',
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    pickUpAddress: "",
+    dropOffAddress: "",
+    additionalInfo: "",
   });
+
+  useEffect(() => {
+    if (onClearSignal) {
+      setFormData({
+        firstName: "",
+        lastName: "",
+        phoneNumber: "",
+        pickUpAddress: "",
+        dropOffAddress: "",
+        additionalInfo: "",
+      });
+    }
+  }, [onClearSignal]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handlePrint = () => {
-    window.print();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Form submitted:", formData);
   };
 
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <h2>Call Taking Form</h2>
-      <form>
-        <label>
-          First Name:
-          <input name="firstName" value={formData.firstName} onChange={handleChange} />
-        </label>
-        <br />
-        <label>
-          Last Name:
-          <input name="lastName" value={formData.lastName} onChange={handleChange} />
-        </label>
-        <br />
-        <label>
-          Phone Number:
-          <input name="phone" value={formData.phone} onChange={handleChange} />
-        </label>
-        <br />
-        <label>
-          Pick-Up Address:
-          <input name="pickup" value={formData.pickup} onChange={handleChange} />
-        </label>
-        <br />
-        <label>
-          Drop-Off Address:
-          <input name="dropoff" value={formData.dropoff} onChange={handleChange} />
-        </label>
-        <br />
+      {["firstName", "lastName", "phoneNumber", "pickUpAddress", "dropOffAddress"].map((field) => (
+        <div key={field}>
+          <label>
+            {field.replace(/([A-Z])/g, " $1")}: 
+            <input
+              type="text"
+              name={field}
+              value={formData[field]}
+              onChange={handleChange}
+            />
+          </label>
+        </div>
+      ))}
+      <div>
         <label>
           Additional Information:
-          <textarea name="additional" value={formData.additional} onChange={handleChange} />
+          <textarea
+            name="additionalInfo"
+            value={formData.additionalInfo}
+            onChange={handleChange}
+          />
         </label>
-        <br />
-        <button type="button">Submit</button>
-        <button type="button" onClick={handlePrint}>Print Form</button>
-      </form>
-    </div>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
   );
 };
 

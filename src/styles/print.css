@@ -1,0 +1,29 @@
+@media print {
+  input, textarea, select {
+    border: none !important;
+    background: none !important;
+    color: black !important;
+    font-weight: bold;
+    width: auto;
+    padding: 0;
+  }
+
+  input::before,
+  textarea::before {
+    content: attr(value);
+    white-space: pre-wrap;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    display: none;
+  }
+
+  button {
+    display: none !important;
+  }
+
+  hr {
+    margin: 1em 0;
+  }
+}

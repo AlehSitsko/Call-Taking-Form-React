@@ -1,115 +1,63 @@
-import React from "react";
+import React, { useState } from 'react';
+import '../styles/print.css'; // Import print styles
 
 const CallForm = () => {
-  const [formData, setFormData] = React.useState({
-    firstName: "",
-    lastName: "",
-    phoneNumber: "",
-    pickUpAddress: "",
-    dropOffAddress: "",
-    additionalInfo: "",
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    phone: '',
+    pickup: '',
+    dropoff: '',
+    additional: '',
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-    // TODO: save to localStorage or IndexedDB
-
-    setFormData({
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-      pickUpAddress: "",
-      dropOffAddress: "",
-      additionalInfo: "",
-    });
+  const handlePrint = () => {
+    window.print();
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div>
       <h2>Call Taking Form</h2>
-
-      <div>
+      <form>
         <label>
           First Name:
-          <input
-            type="text"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-          />
+          <input name="firstName" value={formData.firstName} onChange={handleChange} />
         </label>
-      </div>
-
-      <div>
+        <br />
         <label>
           Last Name:
-          <input
-            type="text"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-          />
+          <input name="lastName" value={formData.lastName} onChange={handleChange} />
         </label>
-      </div>
-
-      <div>
+        <br />
         <label>
           Phone Number:
-          <input
-            type="text"
-            name="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-          />
+          <input name="phone" value={formData.phone} onChange={handleChange} />
         </label>
-      </div>
-
-      <div>
+        <br />
         <label>
           Pick-Up Address:
-          <input
-            type="text"
-            name="pickUpAddress"
-            value={formData.pickUpAddress}
-            onChange={handleChange}
-          />
+          <input name="pickup" value={formData.pickup} onChange={handleChange} />
         </label>
-      </div>
-
-      <div>
+        <br />
         <label>
           Drop-Off Address:
-          <input
-            type="text"
-            name="dropOffAddress"
-            value={formData.dropOffAddress}
-            onChange={handleChange}
-          />
+          <input name="dropoff" value={formData.dropoff} onChange={handleChange} />
         </label>
-      </div>
-
-      <div>
+        <br />
         <label>
           Additional Information:
-          <textarea
-            name="additionalInfo"
-            value={formData.additionalInfo}
-            onChange={handleChange}
-          />
+          <textarea name="additional" value={formData.additional} onChange={handleChange} />
         </label>
-      </div>
-
-      <button type="submit">Submit</button>
-    </form>
+        <br />
+        <button type="button">Submit</button>
+        <button type="button" onClick={handlePrint}>Print Form</button>
+      </form>
+    </div>
   );
 };
 

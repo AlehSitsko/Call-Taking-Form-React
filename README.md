@@ -1,12 +1,110 @@
-# React + Vite
+# Call Taking Form (React)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple, modular call intake application designed for EMS dispatch scenarios. Built with React for improved state management, maintainability, and scalability.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📦 Features
 
-## Expanding the ESLint configuration
+- Dynamic call-taking form with editable fields  
+- Modular price calculator based on crew size and mileage  
+- Clean UI separation and easy-to-extend structure  
+- Ready for printing and email-based export (planned)  
+- Clear All functionality across modules
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🧱 Project Structure
+
+src/
+├── App.jsx # Root app layout
+├── components/
+│ ├── CallForm.jsx # Call data entry form
+│ ├── PriceCalculator.jsx # Cost calculation logic
+│ └── [ExportButtons.jsx] # Export (email/print) - coming soon
+├── index.js # App entry point
+├── index.css # Global styles
+└── print.css # Print-only styles
+
+
+---
+
+## 🚀 Getting Started
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/call-taking-form.git
+
+2. Install dependencies:
+
+    npm install
+
+3. Run the development server:
+    npm start
+
+4. Open in browser: http://localhost:3000
+
+🧩 Components Overview
+CallForm.jsx
+Fields:
+
+First Name, Last Name, Phone Number
+
+Pick-Up & Drop-Off Address
+
+Additional Information (textarea)
+
+Controlled via useState
+
+Accepts clear signals to reset
+
+PriceCalculator.jsx
+Inputs:
+
+Base Price
+
+Crew Size (2/4/6 → 1x, 2x, 3x)
+
+Mileage and Rate per Mile
+
+Formula: Total = Base × Multiplier + Mileage × Rate
+Reactively updates total cost
+
+🖨️ Printing
+Inputs and textareas are styled to show values
+
+Interactive controls are hidden on print
+
+Styles handled in print.css
+
+📧 Planned Features
+Email export via mailto:
+
+PDF and JSON export (offline-ready)
+
+Optional backend storage (Flask/SQLite)
+
+Role-based access (future)
+
+✅ Status
+ Core form complete
+
+ Price calculator implemented
+
+ Print-ready styles
+
+ Clear all fields across modules
+
+ Email button (in progress)
+
+ Required field validation
+
+ Export features (future)
+
+ Patient database module (separate)
+
+🔒 Disclaimer
+This is a prototype. No real patient data should be entered. Use with mock data only.
+
+📄 License
+MIT — Free to use and modify with attribution.

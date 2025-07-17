@@ -1,29 +1,40 @@
 @media print {
-  input, textarea, select {
-    border: none !important;
-    background: none !important;
-    color: black !important;
-    font-weight: bold;
-    width: auto;
+  body {
+    margin: 0;
     padding: 0;
   }
 
-  input::before,
-  textarea::before {
-    content: attr(value);
-    white-space: pre-wrap;
+  .container,
+  .card,
+  .card-body {
+    width: 95% !important;
+    max-width: 95% !important;
+    padding: 1rem !important;
+    margin: auto !important;
+    box-shadow: none !important;
+    border: none !important;
   }
 
-  input::placeholder,
-  textarea::placeholder {
-    display: none;
+  .row > [class*="col-"] {
+    width: 100% !important;
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
   }
 
-  button {
+  input, textarea {
+    width: 100% !important;
+  }
+
+  .d-flex {
+    display: block !important;
+  }
+
+  .btn,
+  .no-print {
     display: none !important;
   }
 
-  hr {
-    margin: 1em 0;
+  @page {
+    margin: 1cm;
   }
 }

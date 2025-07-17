@@ -1,68 +1,59 @@
-// CallForm.jsx
-import React, { useState, useEffect } from "react";
+import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 
-const CallForm = ({ onClearSignal }) => {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    phoneNumber: "",
-    pickUpAddress: "",
-    dropOffAddress: "",
-    additionalInfo: "",
-  });
+const CallForm = forwardRef((props, ref) => {
+  const formRef = useRef();
 
-  useEffect(() => {
-    if (onClearSignal) {
-      setFormData({
-        firstName: "",
-        lastName: "",
-        phoneNumber: "",
-        pickUpAddress: "",
-        dropOffAddress: "",
-        additionalInfo: "",
-      });
+  useImperativeHandle(ref, () => ({
+    clearForm() {
+      const form = formRef.current;
+      if (!form) return;
+      const inputs = form.querySelectorAll('input, textarea');
+      inputs.forEach(input => input.value = '');
     }
-  }, [onClearSignal]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-  };
+  }));
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Call Taking Form</h2>
-      {["firstName", "lastName", "phoneNumber", "pickUpAddress", "dropOffAddress"].map((field) => (
-        <div key={field}>
-          <label>
-            {field.replace(/([A-Z])/g, " $1")}: 
-            <input
-              type="text"
-              name={field}
-              value={formData[field]}
-              onChange={handleChange}
-            />
-          </label>
+    <div className="container mt-4">
+      <div className="card shadow">
+        <div className="card-header bg-primary text-white">
+          <h5 className="mb-0">Call Taking Form</h5>
         </div>
-      ))}
-      <div>
-        <label>
-          Additional Information:
-          <textarea
-            name="additionalInfo"
-            value={formData.additionalInfo}
-            onChange={handleChange}
-          />
-        </label>
+        <div className="card-body">
+          <form ref={formRef}>
+            <div className="row">
+              <div className="col-md-6 mb-3">
+                <label htmlFor="firstName" className="form-label">First Name</label>
+                <input type="text" className="form-control" id="firstName" placeholder="e.g. John" autoComplete="given-name" />
+              </div>
+              <div className="col-md-6 mb-3">
+                <label htmlFor="lastName" className="form-label">Last Name</label>
+                <input type="text" className="form-control" id="lastName" placeholder="e.g. Doe" autoComplete="family-name" />
+              </div>
+              <div className="col-md-6 mb-3">
+                <label htmlFor="phoneNumber" className="form-label">Phone Number</label>
+                <input type="tel" className="form-control" id="phoneNumber" placeholder="e.g. 555-123-4567" autoComplete="tel" />
+              </div>
+              <div className="col-md-6 mb-3">
+                <label htmlFor="pickupAddress" className="form-label">Pick Up Address</label>
+                <input type="text" className="form-control" id="pickupAddress" placeholder="123 Main St" />
+              </div>
+              <div className="col-md-6 mb-3">
+                <label htmlFor="dropoffAddress" className="form-label">Drop Off Address</label>
+                <input type="text" className="form-control" id="dropoffAddress" placeholder="456 Oak Ave" />
+              </div>
+              <div className="col-md-6 mb-3">
+                <label htmlFor="additionalInfo" className="form-label">Additional Information</label>
+                <textarea className="form-control" id="additionalInfo" rows="2" placeholder="Any notes or instructions..." />
+              </div>
+            </div>
+            <div className="d-flex justify-content-between mt-4">
+              <button type="submit" className="btn btn-success">Submit</button>
+            </div>
+          </form>
+        </div>
       </div>
-      <button type="submit">Submit</button>
-    </form>
+    </div>
   );
-};
+});
 
 export default CallForm;

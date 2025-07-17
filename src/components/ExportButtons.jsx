@@ -1,13 +1,18 @@
-import React from "react";
+import React from 'react';
 
-const ExportButtons = () => {
+const ExportButtons = ({ onClearAll }) => {
   const handlePrint = () => {
     window.print();
-  }
+  };
 
   return (
-    <div style={{ marginTop: '1rem' }}>
-        <button onClick={handlePrint}>🖨 Print Form</button>
+    <div className="container mt-4 mb-4 d-flex justify-content-end gap-2">
+      <button className="btn btn-outline-secondary" onClick={onClearAll}>
+        🧹 Clear All Fields
+      </button>
+      <button className="btn btn-outline-primary" onClick={handlePrint}>
+        🖨 Print Form
+      </button>
     </div>
   );
 };

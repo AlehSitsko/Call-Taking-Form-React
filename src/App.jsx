@@ -1,25 +1,24 @@
-// App.jsx
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import CallForm from './components/CallForm';
 import PriceCalculator from './components/PriceCalculator';
+import ExportButtons from './components/ExportButtons';
 
-function App() {
-  const [clearTrigger, setClearTrigger] = useState(false);
+const App = () => {
+  const callFormRef = useRef();
+  const priceCalculatorRef = useRef();
 
   const handleClearAll = () => {
-    // Trigger the form reset by toggling the state
-    setClearTrigger((prev) => !prev);
+    if (callFormRef.current) callFormRef.current.clearForm();
+    if (priceCalculatorRef.current) priceCalculatorRef.current.clearCalculator();
   };
 
   return (
-    <div className="App">
-      <CallForm onClearSignal={clearTrigger} />
-      <hr />
-      <PriceCalculator onClearSignal={clearTrigger} />
-      <hr />
-      <button onClick={handleClearAll}>Clear All Fields</button>
+    <div className="container mt-4">
+      <CallForm ref={callFormRef} />
+      <PriceCalculator ref={priceCalculatorRef} />
+      <ExportButtons onClearAll={handleClearAll} />
     </div>
   );
-}
+};
 
 export default App;

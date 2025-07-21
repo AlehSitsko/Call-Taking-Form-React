@@ -6,6 +6,8 @@ const PriceCalculator = forwardRef((props, ref) => {
   const [mileage, setMileage] = useState('');
   const [ratePerMile, setRatePerMile] = useState('');
   const [totalPrice, setTotalPrice] = useState(null);
+  const [isRoundTrip, setIsRoundTrip] = useState(false); // ← Новый флаг
+  const [tripTotal, setTripTotal] = useState(null); // ← Новый итог
 
   useImperativeHandle(ref, () => ({
     clearCalculator() {
@@ -14,6 +16,8 @@ const PriceCalculator = forwardRef((props, ref) => {
       setMileage('');
       setRatePerMile('');
       setTotalPrice(null);
+      setTripTotal(null);
+      setIsRoundTrip(false);
     }
   }));
 
@@ -22,8 +26,12 @@ const PriceCalculator = forwardRef((props, ref) => {
     const base = parseFloat(basePrice) || 0;
     const miles = parseFloat(mileage) || 0;
     const rate = parseFloat(ratePerMile) || 0;
+
     const totalCost = base * multiplier + miles * rate;
     setTotalPrice(totalCost.toFixed(2));
+
+    const roundTripCost = isRoundTrip ? totalCost * 2 : totalCost;
+    setTripTotal(roundTripCost.toFixed(2));
   };
 
   return (
@@ -76,13 +84,29 @@ const PriceCalculator = forwardRef((props, ref) => {
             />
           </div>
 
+          <div className="form-check mb-3">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              id="roundTripCheck"
+              checked={isRoundTrip}
+              onChange={(e) => setIsRoundTrip(e.target.checked)}
+            />
+            <label className="form-check-label" htmlFor="roundTripCheck">
+              Return Ride (Round-Trip)
+            </label>
+          </div>
+
           <button className="btn btn-primary me-2" onClick={calculatePrice}>
             Calculate Price
           </button>
 
           {totalPrice !== null && (
             <div className="mt-3">
-              <h6>Total Price: ${totalPrice}</h6>
+              <h6>One-Way Price: ${totalPrice}</h6>
+              {isRoundTrip && (
+                <h6 className="text-success">Trip Total (Round-Trip): ${tripTotal}</h6>
+              )}
             </div>
           )}
         </div>

@@ -16,6 +16,7 @@ const CallForm = forwardRef((props, ref) => {
   const [returnPickUp, setReturnPickUp] = useState('');
   const [returnDestination, setReturnDestination] = useState('');
   const [returnTime, setReturnTime] = useState('');
+  const [serviceLevel, setServiceLevel] = useState('');
 
   useImperativeHandle(ref, () => ({
     clearForm() {
@@ -24,7 +25,6 @@ const CallForm = forwardRef((props, ref) => {
       const inputs = form.querySelectorAll('input, textarea');
       inputs.forEach((input) => (input.value = ''));
 
-      // reset controlled fields
       setCallerType('');
       setCallerNote('');
       setPickupTime('');
@@ -32,10 +32,10 @@ const CallForm = forwardRef((props, ref) => {
       setReturnPickUp('');
       setReturnDestination('');
       setReturnTime('');
+      setServiceLevel('');
     },
   }));
 
-  // Autofill return ride addresses based on pickup and dropoff values
   useEffect(() => {
     const pickup = document.getElementById('pickupAddress')?.value || '';
     const dropoff = document.getElementById('dropoffAddress')?.value || '';
@@ -59,7 +59,6 @@ const CallForm = forwardRef((props, ref) => {
         <div className="card-body">
           <form ref={formRef}>
             <div className="row">
-
               {/* Caller Type */}
               <div className="col-md-6 mb-3">
                 <label htmlFor="callerType" className="form-label">
@@ -79,7 +78,7 @@ const CallForm = forwardRef((props, ref) => {
                 </select>
               </div>
 
-              {/* Caller Note (always visible) */}
+              {/* Caller Note */}
               <div className="col-md-6 mb-3">
                 <label htmlFor="callerNote" className="form-label">
                   Specify (if needed)
@@ -94,7 +93,7 @@ const CallForm = forwardRef((props, ref) => {
                 />
               </div>
 
-              {/* Basic Fields */}
+              {/* Name and Phone */}
               <div className="col-md-6 mb-3">
                 <label htmlFor="firstName" className="form-label">
                   First Name
@@ -177,7 +176,7 @@ const CallForm = forwardRef((props, ref) => {
                 />
               </div>
 
-              {/* Return Ride Selector */}
+              {/* Return Ride */}
               <div className="col-md-6 mb-3">
                 <label htmlFor="returnRideOption" className="form-label">
                   Return Ride
@@ -194,7 +193,7 @@ const CallForm = forwardRef((props, ref) => {
                 </select>
               </div>
 
-              {/* Conditional Return Ride Fields */}
+              {/* Conditional Return Fields */}
               {(returnRideOption === 'return' ||
                 returnRideOption === 'will_call') && (
                 <>
@@ -238,6 +237,69 @@ const CallForm = forwardRef((props, ref) => {
                   )}
                 </>
               )}
+
+              {/* Service Level */}
+              <div className="col-md-12 mb-3">
+                <label className="form-label">Service Level</label>
+                <div className="d-flex gap-3 flex-wrap">
+                  <div
+                    className={`form-check p-2 rounded ${
+                      serviceLevel === 'stretcher' ? 'bg-info text-white' : 'border'
+                    }`}
+                  >
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="serviceLevel"
+                      id="stretcher"
+                      value="stretcher"
+                      checked={serviceLevel === 'stretcher'}
+                      onChange={() => setServiceLevel('stretcher')}
+                    />
+                    <label className="form-check-label ms-2" htmlFor="stretcher">
+                      Stretcher Base
+                    </label>
+                  </div>
+
+                  <div
+                    className={`form-check p-2 rounded ${
+                      serviceLevel === 'bls' ? 'bg-success text-white' : 'border'
+                    }`}
+                  >
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="serviceLevel"
+                      id="bls"
+                      value="bls"
+                      checked={serviceLevel === 'bls'}
+                      onChange={() => setServiceLevel('bls')}
+                    />
+                    <label className="form-check-label ms-2" htmlFor="bls">
+                      BLS
+                    </label>
+                  </div>
+
+                  <div
+                    className={`form-check p-2 rounded ${
+                      serviceLevel === 'als' ? 'bg-danger text-white' : 'border'
+                    }`}
+                  >
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="serviceLevel"
+                      id="als"
+                      value="als"
+                      checked={serviceLevel === 'als'}
+                      onChange={() => setServiceLevel('als')}
+                    />
+                    <label className="form-check-label ms-2" htmlFor="als">
+                      ALS
+                    </label>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="d-flex justify-content-between mt-4">

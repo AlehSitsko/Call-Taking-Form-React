@@ -13,10 +13,12 @@ const App = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <CallForm ref={callFormRef} />
-      <PriceCalculator ref={priceCalculatorRef} />
-      <ExportButtons onClearAll={handleClearAll} />
+    <div className="container">
+      <div className="print-wrapper">
+        <CallForm ref={callFormRef} />
+        <PriceCalculator ref={priceCalculatorRef} />
+        <ExportButtons onClearAll={handleClearAll} />
+      </div>
     </div>
   );
 };

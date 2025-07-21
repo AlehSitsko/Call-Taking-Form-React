@@ -15,14 +15,37 @@
     border: none !important;
   }
 
+  .card-header {
+    background: none !important;
+    color: #000 !important;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+  }
+
   .row > [class*="col-"] {
     width: 100% !important;
     flex: 0 0 100% !important;
     max-width: 100% !important;
   }
 
-  input, textarea {
+  input,
+  textarea {
     width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+  }
+
+  textarea {
+    height: auto !important;
+    min-height: 2em;
+  }
+
+  .form-label,
+  input,
+  textarea {
+    margin-bottom: 0.25rem !important;
   }
 
   .d-flex {
@@ -30,8 +53,16 @@
   }
 
   .btn,
-  .no-print {
+  .no-print,
+  button,
+  [type="button"],
+  [type="submit"] {
     display: none !important;
+  }
+
+  .return-ride-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 
   @page {

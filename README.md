@@ -1,110 +1,93 @@
 # Call Taking Form (React)
 
-A simple, modular call intake application designed for EMS dispatch scenarios. Built with React for improved state management, maintainability, and scalability.
+This is a React-based web application for taking and managing non-emergency medical transport calls.
+
+## 🌐 Live Demo
+Hosted on GitHub Pages:  
+👉 [https://alehsitsko.github.io/Call-Taking-Form-React/]
+
+## 📦 Tech Stack
+- **Frontend**: React, Bootstrap
+- **Bundler**: Vite
+- **Backend**: (Planned) Python + Flask
+- **Deployment**: GitHub Pages
+
+## 🚀 Features
+- Call-taking form with fields for date, pickup time, patient info, etc.
+- Price calculator with base price, per-mile rate, and crew multiplier
+- Return ride logic
+- Optional fixed price override
+- Print-friendly output with clean styling
+- Bootstrap layout for responsiveness
+- Clear all fields button
+- Field validation (required: First Name, Last Name, Pickup Address)
+- Deployment via `gh-pages`
+
+## 📂 Project Structure
+call-taking-form-react/
+├── backend/ # Flask backend (coming soon)
+├── public/
+├── src/
+│ ├── components/ # React components
+│ ├── App.jsx
+│ └── main.jsx
+├── dist/ # Production build
+├── index.html
+├── vite.config.js
+├── package.json
+└── README.md
+
+graphql
+Copy
+Edit
+
+## 🛠 Setup & Development
+
+```bash
+npm install
+npm run dev        # Start dev server
+npm run build      # Build for production
+npm run deploy     # Deploy to GitHub Pages
+📌 Notes
+Project is under active development.
+
+Backend functionality (patients DB, call history) is in planning stage.
+
+pgsql
+Copy
+Edit
 
 ---
 
-## 📦 Features
+### ✅ `TODO.md`
+```markdown
+# TODO — Call Taking Form (React)
 
-- Dynamic call-taking form with editable fields  
-- Modular price calculator based on crew size and mileage  
-- Clean UI separation and easy-to-extend structure  
-- Ready for printing and email-based export (planned)  
-- Clear All functionality across modules
+## ✅ Completed
 
----
+- [x] Rewrite frontend using React
+- [x] Migrate calculator to reusable component
+- [x] Add Return Ride logic (Yes / No / Will Call)
+- [x] Add Fixed Price override
+- [x] Add validation (First Name, Last Name, Pickup Address)
+- [x] Add Clear All Fields button
+- [x] Auto-clear after Print / Email
+- [x] Print-friendly styling
+- [x] Bootstrap styling & layout
+- [x] Deploy to GitHub Pages
 
-## 🧱 Project Structure
+## 🟡 In Progress
 
-src/
-├── App.jsx # Root app layout
-├── components/
-│ ├── CallForm.jsx # Call data entry form
-│ ├── PriceCalculator.jsx # Cost calculation logic
-│ └── [ExportButtons.jsx] # Export (email/print) - coming soon
-├── index.js # App entry point
-├── index.css # Global styles
-└── print.css # Print-only styles
+- [ ] Final design polish (minimal priority)
+- [ ] Add Ride Date field
+- [ ] Left/right column rebalancing for wide screens
 
+## ⏳ Planned (Post-MVP)
 
----
-
-## 🚀 Getting Started
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/call-taking-form.git
-
-2. Install dependencies:
-
-    npm install
-
-3. Run the development server:
-    npm start
-
-4. Open in browser: http://localhost:3000
-
-🧩 Components Overview
-CallForm.jsx
-Fields:
-
-First Name, Last Name, Phone Number
-
-Pick-Up & Drop-Off Address
-
-Additional Information (textarea)
-
-Controlled via useState
-
-Accepts clear signals to reset
-
-PriceCalculator.jsx
-Inputs:
-
-Base Price
-
-Crew Size (2/4/6 → 1x, 2x, 3x)
-
-Mileage and Rate per Mile
-
-Formula: Total = Base × Multiplier + Mileage × Rate
-Reactively updates total cost
-
-🖨️ Printing
-Inputs and textareas are styled to show values
-
-Interactive controls are hidden on print
-
-Styles handled in print.css
-
-📧 Planned Features
-Email export via mailto:
-
-PDF and JSON export (offline-ready)
-
-Optional backend storage (Flask/SQLite)
-
-Role-based access (future)
-
-✅ Status
- Core form complete
-
- Price calculator implemented
-
- Print-ready styles
-
- Clear all fields across modules
-
- Email button (in progress)
-
- Required field validation
-
- Export features (future)
-
- Patient database module (separate)
-
-🔒 Disclaimer
-This is a prototype. No real patient data should be entered. Use with mock data only.
-
-📄 License
-MIT — Free to use and modify with attribution.
+- [ ] Flask backend for patient records
+- [ ] Page: `patients.html` (search, edit, notes)
+- [ ] Export call info to PDF / JSON
+- [ ] Send email from server (SMTP)
+- [ ] Add login + roles (admin, dispatcher)
+- [ ] Add offline / Electron support
+- [ ] Distance calculator via Google/Mapbox API

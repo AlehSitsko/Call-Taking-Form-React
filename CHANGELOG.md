@@ -1,5 +1,14 @@
 # 📜 Call Taking Form — Changelog
 
+## [0.7.0] – 2025-07-29
+### Added
+- Full deployment to GitHub Pages
+- Field validation for required inputs (First Name, Last Name, Pickup Address)
+- Automatic field clearing after Print or Email
+- Final cleanup and asset organization
+- Bootstrap layout implementation for form responsiveness
+- Final pre-release refactoring and stable MVP freeze
+
 ## [0.6.0] – 2025-07-28
 ### Added
 - PatientsPage component

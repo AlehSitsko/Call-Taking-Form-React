@@ -1,110 +1,62 @@
-# Call Taking Form (React)
+# Call Taking Form — React + Flask
 
-A simple, modular call intake application designed for EMS dispatch scenarios. Built with React for improved state management, maintainability, and scalability.
+## 📋 Description
 
----
+**Call Taking Form** is a custom-built application for logging and managing non-emergency medical transport (NEMT) calls. It is designed for dispatchers to record patient trip details quickly, calculate prices, and serve as a local backup in case of primary system failure.
 
-## 📦 Features
+## 🎯 Purpose
 
-- Dynamic call-taking form with editable fields  
-- Modular price calculator based on crew size and mileage  
-- Clean UI separation and easy-to-extend structure  
-- Ready for printing and email-based export (planned)  
-- Clear All functionality across modules
+- Provide a reliable fallback when internet or main systems go down
+- Speed up the intake process for dispatchers
+- Record trip and patient information consistently
+- Offer a lightweight, offline-friendly alternative to heavy EMS platforms
 
----
+## 🛠 Tech Stack
 
-## 🧱 Project Structure
+- **Frontend**: React, Bootstrap, Vite
+- **Backend**: Flask, SQLite (optional)
+- **Deployment**: GitHub Pages (`gh-pages` branch)
 
-src/
-├── App.jsx # Root app layout
-├── components/
-│ ├── CallForm.jsx # Call data entry form
-│ ├── PriceCalculator.jsx # Cost calculation logic
-│ └── [ExportButtons.jsx] # Export (email/print) - coming soon
-├── index.js # App entry point
-├── index.css # Global styles
-└── print.css # Print-only styles
+## ✨ Key Features
 
+- Fully functional dispatch call form
+- Price calculator with crew size, mileage, and return trip logic
+- Return Ride (round-trip) calculation
+- Patients page with search functionality (React-based)
+- Print and clear form functionality
+- Optional backend with patient database
+- Mobile responsive layout
 
----
+## 📁 Project Structure
 
-## 🚀 Getting Started
+```
+/src              → React components
+/backend          → Flask backend (API, DB models)
+/public           → Static files
+/dist             → Build output
+```
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/call-taking-form.git
+## 🚀 Deployment (Frontend only)
 
-2. Install dependencies:
+```bash
+npm install
+npm run build
+npm run deploy
+```
 
-    npm install
+## ⚙️ Development
 
-3. Run the development server:
-    npm start
+```bash
+npm run dev
+```
 
-4. Open in browser: http://localhost:3000
+## 🧩 Backend (Optional)
 
-🧩 Components Overview
-CallForm.jsx
-Fields:
+```bash
+cd backend
+python app.py
+```
 
-First Name, Last Name, Phone Number
+## 📄 License
 
-Pick-Up & Drop-Off Address
-
-Additional Information (textarea)
-
-Controlled via useState
-
-Accepts clear signals to reset
-
-PriceCalculator.jsx
-Inputs:
-
-Base Price
-
-Crew Size (2/4/6 → 1x, 2x, 3x)
-
-Mileage and Rate per Mile
-
-Formula: Total = Base × Multiplier + Mileage × Rate
-Reactively updates total cost
-
-🖨️ Printing
-Inputs and textareas are styled to show values
-
-Interactive controls are hidden on print
-
-Styles handled in print.css
-
-📧 Planned Features
-Email export via mailto:
-
-PDF and JSON export (offline-ready)
-
-Optional backend storage (Flask/SQLite)
-
-Role-based access (future)
-
-✅ Status
- Core form complete
-
- Price calculator implemented
-
- Print-ready styles
-
- Clear all fields across modules
-
- Email button (in progress)
-
- Required field validation
-
- Export features (future)
-
- Patient database module (separate)
-
-🔒 Disclaimer
-This is a prototype. No real patient data should be entered. Use with mock data only.
-
-📄 License
-MIT — Free to use and modify with attribution.
+MIT License

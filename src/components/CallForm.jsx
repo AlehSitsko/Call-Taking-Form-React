@@ -17,6 +17,10 @@ const CallForm = forwardRef((props, ref) => {
   const [returnDestination, setReturnDestination] = useState('');
   const [returnTime, setReturnTime] = useState('');
   const [serviceLevel, setServiceLevel] = useState('');
+  const [formData, setFormData] = useState({
+    callDate: new Date().toISOString().split('T')[0], // Default to today
+    tripDate: ''
+  });
 
   useImperativeHandle(ref, () => ({
     clearForm() {
@@ -33,6 +37,10 @@ const CallForm = forwardRef((props, ref) => {
       setReturnDestination('');
       setReturnTime('');
       setServiceLevel('');
+      setFormData({
+        callDate: '',
+        tripDate: ''
+      });
     },
   }));
 
@@ -139,6 +147,27 @@ const CallForm = forwardRef((props, ref) => {
                   className="form-control"
                   id="pickupAddress"
                   placeholder="123 Main St"
+                />
+              </div>
+              {/*Call and Ride Details*/}
+              <div className="col-md-6 mb-3">
+                <label htmlFor='callDate' className='form-label'>Date of Call</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  id="callDate"
+                  value={formData.callDate || ''}
+                  onChange={(e) => setFormData({ ...formData, callDate: e.target.value })}
+                />  
+              </div>
+              <div className='col-md-6 mb-3'> 
+                <label htmlFor='tripDate' className='form-label'>Date of Trip</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  id="tripDate"
+                  value={formData.tripDate || ''}
+                  onChange={(e) => setFormData({ ...formData, tripDate: e.target.value })}
                 />
               </div>
               <div className="col-md-6 mb-3">

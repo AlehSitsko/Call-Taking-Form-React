@@ -3,9 +3,11 @@ import CallForm from './components/CallForm';
 import PriceCalculator from './components/PriceCalculator';
 import ExportButtons from './components/ExportButtons';
 import PatientsPage from './components/PatientsPage';
+import UserManual from './components/UserManual';
 
 const App = () => {
-  const [showPatients, setShowPatients] = useState(false);
+  const [currentPage, setCurrentPage] = useState('form');
+
   const callFormRef = useRef();
   const priceCalculatorRef = useRef();
 
@@ -16,22 +18,40 @@ const App = () => {
 
   return (
     <div className="container">
-      <button
-        className="btn btn-outline-secondary my-3"
-        onClick={() => setShowPatients(!showPatients)}
-      >
-        {showPatients ? 'Back to Call Form' : 'View Patients'}
-      </button>
+      <div className="my-3">
+        <button
+          className="btn btn-outline-primary me-2"
+          onClick={() => setCurrentPage('form')}
+        >
+          Call Form
+        </button>
 
-      {showPatients ? (
-        <PatientsPage />
-      ) : (
+        <button
+          className="btn btn-outline-secondary me-2"
+          onClick={() => setCurrentPage('patients')}
+        >
+          View Patients
+        </button>
+
+        <button
+          className="btn btn-outline-info"
+          onClick={() => setCurrentPage('manual')}
+        >
+          User Manual
+        </button>
+      </div>
+
+      {currentPage === 'form' && (
         <div className="print-wrapper">
           <CallForm ref={callFormRef} />
           <PriceCalculator ref={priceCalculatorRef} />
           <ExportButtons onClearAll={handleClearAll} />
         </div>
       )}
+
+      {currentPage === 'patients' && <PatientsPage />}
+
+      {currentPage === 'manual' && <UserManual />}
     </div>
   );
 };

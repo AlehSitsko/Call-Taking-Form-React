@@ -374,9 +374,6 @@ Explicitly postpone for now
  union/contract logic
 Suggested development order
 
-Вот это — самый важный кусок.
-Если идти не по порядку, проект быстро начнет расползаться.
-
 Recommended build order
 Step 1
  Add routing
@@ -419,9 +416,8 @@ Step 9
  Move employees and schedules to Flask later
 Step 10
  Add hours tracking only after planner becomes stable
+ 
 Ideas to add later
-
-Вот что реально может усилить проект, но потом, не сейчас.
 
 Useful future additions
  Crew templates

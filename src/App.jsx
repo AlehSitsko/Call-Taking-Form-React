@@ -1,59 +1,53 @@
-import React, { useRef, useState } from 'react';
-import CallForm from './components/CallForm';
-import PriceCalculator from './components/PriceCalculator';
-import ExportButtons from './components/ExportButtons';
-import PatientsPage from './components/PatientsPage';
-import UserManual from './components/UserManual';
+import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
+import CallFormPage from './pages/CallFormPage';
+import PatientsPage from './pages/PatientsPage';
+import UserManualPage from './pages/UserManualPage';
+import EmployeesPage from './pages/EmployeesPage';
+import CrewPlannerPage from './pages/CrewPlannerPage';
 
-const App = () => {
-  const [currentPage, setCurrentPage] = useState('form');
-
-  const callFormRef = useRef();
-  const priceCalculatorRef = useRef();
-
-  const handleClearAll = () => {
-    if (callFormRef.current) callFormRef.current.clearForm();
-    if (priceCalculatorRef.current) priceCalculatorRef.current.clearCalculator();
-  };
+function App() {
+  const getNavLinkClass = ({ isActive }) =>
+    `nav-link${isActive ? ' active fw-semibold' : ''}`;
 
   return (
-    <div className="container">
-      <div className="my-3">
-        <button
-          className="btn btn-outline-primary me-2"
-          onClick={() => setCurrentPage('form')}
-        >
-          Call Form
-        </button>
+    <BrowserRouter>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div className="container-fluid px-3">
+          <span className="navbar-brand fw-bold">Call Taking Form</span>
 
-        <button
-          className="btn btn-outline-secondary me-2"
-          onClick={() => setCurrentPage('patients')}
-        >
-          View Patients
-        </button>
+          <div className="navbar-nav ms-3">
+            <NavLink to="/" end className={getNavLinkClass}>
+              Call Form
+            </NavLink>
 
-        <button
-          className="btn btn-outline-info"
-          onClick={() => setCurrentPage('manual')}
-        >
-          User Manual
-        </button>
-      </div>
+            <NavLink to="/patients" className={getNavLinkClass}>
+              Patients
+            </NavLink>
 
-      {currentPage === 'form' && (
-        <div className="print-wrapper">
-          <CallForm ref={callFormRef} />
-          <PriceCalculator ref={priceCalculatorRef} />
-          <ExportButtons onClearAll={handleClearAll} />
+            <NavLink to="/manual" className={getNavLinkClass}>
+              User Manual
+            </NavLink>
+
+            <NavLink to="/employees" className={getNavLinkClass}>
+              Employees
+            </NavLink>
+
+            <NavLink to="/crew-planner" className={getNavLinkClass}>
+              Crew Planner
+            </NavLink>
+          </div>
         </div>
-      )}
+      </nav>
 
-      {currentPage === 'patients' && <PatientsPage />}
-
-      {currentPage === 'manual' && <UserManual />}
-    </div>
+      <Routes>
+        <Route path="/" element={<CallFormPage />} />
+        <Route path="/patients" element={<PatientsPage />} />
+        <Route path="/manual" element={<UserManualPage />} />
+        <Route path="/employees" element={<EmployeesPage />} />
+        <Route path="/crew-planner" element={<CrewPlannerPage />} />
+      </Routes>
+    </BrowserRouter>
   );
-};
+}
 
 export default App;

@@ -1,31 +1,33 @@
 import React, { useState } from 'react';
 
+const initialFormData = {
+  firstName: '',
+  lastName: '',
+  phone: '',
+  isActive: true,
+  notes: '',
+
+  evoc: {
+    hasLicense: false,
+    licenseName: '',
+    expirationDate: '',
+  },
+  emt: {
+    hasLicense: false,
+    licenseName: '',
+    expirationDate: '',
+  },
+  paramedic: {
+    hasLicense: false,
+    licenseName: '',
+    expirationDate: '',
+  },
+};
+
 function EmployeesPage() {
   const [employees, setEmployees] = useState([]);
-
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    phone: '',
-    isActive: true,
-    notes: '',
-
-    evoc: {
-      hasLicense: false,
-      licenseName: '',
-      expirationDate: '',
-    },
-    emt: {
-      hasLicense: false,
-      licenseName: '',
-      expirationDate: '',
-    },
-    paramedic: {
-      hasLicense: false,
-      licenseName: '',
-      expirationDate: '',
-    },
-  });
+  const [editingEmployeeId, setEditingEmployeeId] = useState(null);
+  const [formData, setFormData] = useState(initialFormData);
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -48,6 +50,28 @@ function EmployeesPage() {
     }));
   };
 
+  const resetForm = () => {
+    setFormData(initialFormData);
+    setEditingEmployeeId(null);
+  };
+
+  const handleEdit = (employee) => {
+    setFormData({
+      firstName: employee.firstName,
+      lastName: employee.lastName,
+      phone: employee.phone,
+      isActive: employee.isActive,
+      notes: employee.notes,
+
+      evoc: { ...employee.evoc },
+      emt: { ...employee.emt },
+      paramedic: { ...employee.paramedic },
+    });
+
+    setEditingEmployeeId(employee.id);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -56,8 +80,8 @@ function EmployeesPage() {
       return;
     }
 
-    const newEmployee = {
-      id: Date.now(),
+    const employeePayload = {
+      id: editingEmployeeId || Date.now(),
       firstName: formData.firstName.trim(),
       lastName: formData.lastName.trim(),
       phone: formData.phone.trim(),
@@ -69,53 +93,88 @@ function EmployeesPage() {
       paramedic: { ...formData.paramedic },
     };
 
-    setEmployees((prev) => [...prev, newEmployee]);
+    if (editingEmployeeId) {
+      setEmployees((prev) =>
+        prev.map((employee) =>
+          employee.id === editingEmployeeId ? employeePayload : employee
+        )
+      );
+    } else {
+      setEmployees((prev) => [...prev, employeePayload]);
+    }
 
-    setFormData({
-      firstName: '',
-      lastName: '',
-      phone: '',
-      isActive: true,
-      notes: '',
-
-      evoc: {
-        hasLicense: false,
-        licenseName: '',
-        expirationDate: '',
-      },
-      emt: {
-        hasLicense: false,
-        licenseName: '',
-        expirationDate: '',
-      },
-      paramedic: {
-        hasLicense: false,
-        licenseName: '',
-        expirationDate: '',
-      },
-    });
+    resetForm();
   };
 
   const handleDelete = (employeeId) => {
+    const isEditingCurrentEmployee = editingEmployeeId === employeeId;
+
     setEmployees((prev) => prev.filter((employee) => employee.id !== employeeId));
+
+    if (isEditingCurrentEmployee) {
+      resetForm();
+    }
+  };
+
+  const getLicenseStatus = (license) => {
+    if (!license.hasLicense) {
+      return 'No License';
+    }
+
+    if (!license.expirationDate) {
+      return 'Active';
+    }
+
+    const today = new Date();
+    const expirationDate = new Date(`${license.expirationDate}T23:59:59`);
+    const diffInMs = expirationDate - today;
+    const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+
+    if (diffInDays < 0) {
+      return 'Expired';
+    }
+
+    if (diffInDays <= 30) {
+      return 'Expiring Soon';
+    }
+
+    return 'Active';
+  };
+
+  const getStatusBadgeClass = (status) => {
+    switch (status) {
+      case 'Active':
+        return 'text-bg-success';
+      case 'Expiring Soon':
+        return 'text-bg-warning';
+      case 'Expired':
+        return 'text-bg-danger';
+      default:
+        return 'text-bg-secondary';
+    }
   };
 
   const renderLicenseSummary = (license) => {
-    if (!license.hasLicense) {
-      return 'No';
-    }
+    const status = getLicenseStatus(license);
 
-    const parts = [];
+    return (
+      <div>
+        <span className={`badge ${getStatusBadgeClass(status)} me-2`}>
+          {status}
+        </span>
 
-    if (license.licenseName.trim()) {
-      parts.push(license.licenseName.trim());
-    }
-
-    if (license.expirationDate) {
-      parts.push(`Exp: ${license.expirationDate}`);
-    }
-
-    return parts.length > 0 ? parts.join(' | ') : 'Yes';
+        {license.hasLicense && (
+          <div className="small mt-1">
+            <div>{license.licenseName.trim() || 'Unnamed License'}</div>
+            <div>
+              {license.expirationDate
+                ? `Exp: ${license.expirationDate}`
+                : 'No expiration date'}
+            </div>
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -128,8 +187,14 @@ function EmployeesPage() {
       </div>
 
       <div className="card shadow-sm mb-4">
-        <div className="card-header">
-          <h5 className="mb-0">Add Employee</h5>
+        <div className="card-header d-flex justify-content-between align-items-center">
+          <h5 className="mb-0">
+            {editingEmployeeId ? 'Edit Employee' : 'Add Employee'}
+          </h5>
+
+          {editingEmployeeId && (
+            <span className="badge text-bg-info">Editing Mode</span>
+          )}
         </div>
 
         <div className="card-body">
@@ -387,10 +452,20 @@ function EmployeesPage() {
                 </div>
               </div>
 
-              <div className="col-12">
+              <div className="col-12 d-flex gap-2">
                 <button type="submit" className="btn btn-primary">
-                  Add Employee
+                  {editingEmployeeId ? 'Update Employee' : 'Add Employee'}
                 </button>
+
+                {editingEmployeeId && (
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={resetForm}
+                  >
+                    Cancel Edit
+                  </button>
+                )}
               </div>
             </div>
           </form>
@@ -418,7 +493,7 @@ function EmployeesPage() {
                     <th>EMT</th>
                     <th>Paramedic</th>
                     <th>Notes</th>
-                    <th style={{ width: '120px' }}>Actions</th>
+                    <th style={{ width: '170px' }}>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -442,13 +517,23 @@ function EmployeesPage() {
                       <td>{renderLicenseSummary(employee.paramedic)}</td>
                       <td>{employee.notes || '—'}</td>
                       <td>
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-outline-danger"
-                          onClick={() => handleDelete(employee.id)}
-                        >
-                          Delete
-                        </button>
+                        <div className="d-flex gap-2">
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-outline-primary"
+                            onClick={() => handleEdit(employee)}
+                          >
+                            Edit
+                          </button>
+
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-outline-danger"
+                            onClick={() => handleDelete(employee.id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}

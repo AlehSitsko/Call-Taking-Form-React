@@ -10,7 +10,7 @@ function App() {
     `nav-link${isActive ? ' active fw-semibold' : ''}`;
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid px-3">
           <span className="navbar-brand fw-bold">Call Taking Form</span>

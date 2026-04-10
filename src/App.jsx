@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
+import { HashRouter, Routes, Route, NavLink } from 'react-router-dom';
 import CallFormPage from './pages/CallFormPage';
 import PatientsPage from './pages/PatientsPage';
 import UserManualPage from './pages/UserManualPage';
@@ -6,11 +6,29 @@ import EmployeesPage from './pages/EmployeesPage';
 import CrewPlannerPage from './pages/CrewPlannerPage';
 
 function App() {
+  /*
+    Adds Bootstrap active styling to the current navigation link.
+  */
   const getNavLinkClass = ({ isActive }) =>
     `nav-link${isActive ? ' active fw-semibold' : ''}`;
 
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
+    /*
+      HashRouter is used instead of BrowserRouter because the app
+      is deployed to GitHub Pages.
+
+      GitHub Pages does not properly handle direct requests to
+      client-side routes like /employees or /crew-planner.
+
+      HashRouter keeps the route after the # symbol, for example:
+      /#/employees
+
+      This prevents 404 errors when:
+      - refreshing the page
+      - opening a route directly
+      - sharing a direct link to a page
+    */
+    <HashRouter>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid px-3">
           <span className="navbar-brand fw-bold">Call Taking Form</span>
@@ -46,7 +64,7 @@ function App() {
         <Route path="/employees" element={<EmployeesPage />} />
         <Route path="/crew-planner" element={<CrewPlannerPage />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

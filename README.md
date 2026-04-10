@@ -1,93 +1,155 @@
 # Call Taking Form (React)
 
-This is a React-based web application for taking and managing non-emergency medical transport calls.
+This is a React-based web application for managing non-emergency medical transport workflows, including call intake, employee management, and crew planning.
 
 ## 🌐 Live Demo
-Hosted on GitHub Pages:  
-👉 [https://alehsitsko.github.io/Call-Taking-Form-React/]
+👉 https://alehsitsko.github.io/Call-Taking-Form-React/
+
+---
 
 ## 📦 Tech Stack
+
 - **Frontend**: React, Bootstrap
+- **Routing**: React Router
+- **State Management**: React state + localStorage (temporary persistence)
 - **Bundler**: Vite
-- **Backend**: (Planned) Python + Flask
+- **Backend (Planned)**: Python + Flask
 - **Deployment**: GitHub Pages
 
+---
+
 ## 🚀 Features
-- Call-taking form with fields for date, pickup time, patient info, etc.
-- Price calculator with base price, per-mile rate, and crew multiplier
-- Return ride logic
-- Optional fixed price override
-- Print-friendly output with clean styling
-- Bootstrap layout for responsiveness
-- Clear all fields button
-- Field validation (required: First Name, Last Name, Pickup Address)
-- Deployment via `gh-pages`
 
-## 📂 Project Structure
-call-taking-form-react/
-├── backend/ # Flask backend (coming soon)
-├── public/
-├── src/
-│ ├── components/ # React components
-│ ├── App.jsx
-│ └── main.jsx
-├── dist/ # Production build
-├── index.html
-├── vite.config.js
-├── package.json
-└── README.md
+### 📞 Call Taking Form
+- Structured form for transport requests
+- Date of call, trip date, pickup time
+- Caller type, patient info, addresses
+- Return ride logic (Yes / No / Will Call)
+- Service level selection
+- Validation for required fields
+- Print-friendly output
+- Clear All functionality
 
-graphql
-Copy
-Edit
+---
+
+### 👥 Employee Management (NEW)
+- Add, edit, delete employees
+- Store employee data in localStorage
+- Track licenses:
+  - EVOC
+  - EMT
+  - Paramedic
+- License expiration tracking:
+  - Active
+  - Expiring Soon
+  - Expired
+- Automatic role detection based on licenses:
+  - Driver (requires EVOC)
+  - EMT
+  - Paramedic
+  - Assist (default role)
+
+---
+
+### 🚑 Crew Planner (NEW)
+- Loads employees from shared localStorage
+- Assign employees into crew roles
+- Role-based filtering:
+  - Driver → EVOC required
+  - EMT → EMT license
+  - Paramedic → Paramedic license
+  - Assist → any employee
+- Prevents duplicate assignment across roles
+- Displays warnings for:
+  - Expired licenses
+  - Expiring soon licenses
+
+---
+
+## 🧠 Current Architecture
+
+This project now follows a basic modular structure:
+
+- **Employees Page** → Data source (CRUD + persistence)
+- **Crew Planner Page** → Data consumer (assignment logic)
+- **Call Form Page** → Operational input UI
+
+Data is currently shared using **localStorage**, acting as a temporary client-side database.
+
+---
+
+## ⚠️ Limitations (Current Stage)
+
+- No backend (data stored only in browser)
+- No multi-device sync
+- No authentication yet
+- Crew assignments are not persisted
+- No scheduling system yet
+
+---
+
+## 🔮 Planned Features
+
+### Crew System Upgrade
+Introduce **crew types instead of fixed roles**:
+
+- **ASSIST**
+  - Driver
+  - Assist x2
+
+- **BLS**
+  - Driver
+  - Clinical (EMT or Paramedic)
+  - Assist x2
+
+- **ALS**
+  - Driver
+  - Paramedic (required)
+  - Assist x2
+
+Crew slots will be dynamically generated based on selected crew type.
+
+---
+
+### Backend (Flask)
+- Replace localStorage with database
+- API for:
+  - Employees
+  - Crews
+  - Call history
+- JWT authentication (admin only)
+
+---
+
+### Additional Features
+- Patient database
+- Call history tracking
+- Export (PDF / JSON)
+- Scheduling system (daily / weekly)
+- Offline / Electron version
+
+---
 
 ## 🛠 Setup & Development
 
 ```bash
 npm install
 npm run dev        # Start dev server
-npm run build      # Build for production
+npm run build      # Build project
 npm run deploy     # Deploy to GitHub Pages
+
 📌 Notes
-Project is under active development.
 
-Backend functionality (patients DB, call history) is in planning stage.
+This project is designed as a real-world operational tool, not just a demo.
 
-pgsql
-Copy
-Edit
+It focuses on:
 
----
+workflow optimization
+structured data input
+reducing dispatcher errors
+supporting real EMS operations
+👤 Author
 
-### ✅ `TODO.md`
-```markdown
-# TODO — Call Taking Form (React)
-
-## ✅ Completed
-
-- [x] Rewrite frontend using React
-- [x] Migrate calculator to reusable component
-- [x] Add Return Ride logic (Yes / No / Will Call)
-- [x] Add Fixed Price override
-- [x] Add validation (First Name, Last Name, Pickup Address)
-- [x] Add Clear All Fields button
-- [x] Auto-clear after Print / Email
-- [x] Print-friendly styling
-- [x] Bootstrap styling & layout
-- [x] Deploy to GitHub Pages
-
-## 🟡 In Progress
-
-- [ ] Final design polish (minimal priority)
-- [ ] Add Ride Date field
-- [ ] Left/right column rebalancing for wide screens
-
-## ⏳ Planned (Post-MVP)
-
-- [ ] Flask backend for patient records
-- [ ] Page: `patients.html` (search, edit, notes)
-- [ ] Export call info to PDF / JSON
-- [ ] Send email from server (SMTP)
-- [ ] Add login + roles (admin, dispatcher)
-- [ ] Add offline / Electron support
-- [ ] Distance calculator via Google/Mapbox API
+Aleh Sitsko
+Philadelphia, PA
+GitHub: https://github.com/AlehSitsko

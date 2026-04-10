@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+const STORAGE_KEY = 'employees';
 
 const initialFormData = {
   firstName: '',
@@ -25,9 +27,32 @@ const initialFormData = {
 };
 
 function EmployeesPage() {
-  const [employees, setEmployees] = useState([]);
+  const [employees, setEmployees] = useState(() => {
+    try {
+      const savedEmployees = localStorage.getItem(STORAGE_KEY);
+
+      if (!savedEmployees) {
+        return [];
+      }
+
+      const parsedEmployees = JSON.parse(savedEmployees);
+      return Array.isArray(parsedEmployees) ? parsedEmployees : [];
+    } catch (error) {
+      console.error('Failed to load employees from localStorage:', error);
+      return [];
+    }
+  });
+
   const [editingEmployeeId, setEditingEmployeeId] = useState(null);
   const [formData, setFormData] = useState(initialFormData);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(employees));
+    } catch (error) {
+      console.error('Failed to save employees to localStorage:', error);
+    }
+  }, [employees]);
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -154,6 +179,38 @@ function EmployeesPage() {
     }
   };
 
+  const getAllowedPositions = (employee) => {
+    const positions = ['Assist'];
+
+    if (employee.evoc.hasLicense) {
+      positions.push('Driver');
+    }
+
+    if (employee.emt.hasLicense) {
+      positions.push('EMT');
+    }
+
+    if (employee.paramedic.hasLicense) {
+      positions.push('Paramedic');
+    }
+
+    return positions;
+  };
+
+  const renderAllowedPositions = (employee) => {
+    const positions = getAllowedPositions(employee);
+
+    return (
+      <div className="d-flex flex-wrap gap-1">
+        {positions.map((position) => (
+          <span key={position} className="badge text-bg-primary">
+            {position}
+          </span>
+        ))}
+      </div>
+    );
+  };
+
   const renderLicenseSummary = (license) => {
     const status = getLicenseStatus(license);
 
@@ -175,6 +232,20 @@ function EmployeesPage() {
         )}
       </div>
     );
+  };
+
+  const handleClearAllEmployees = () => {
+    const confirmed = window.confirm(
+      'Are you sure you want to delete all employees from local storage?'
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    setEmployees([]);
+    resetForm();
+    localStorage.removeItem(STORAGE_KEY);
   };
 
   return (
@@ -475,7 +546,18 @@ function EmployeesPage() {
       <div className="card shadow-sm">
         <div className="card-header d-flex justify-content-between align-items-center">
           <h5 className="mb-0">Employee List</h5>
-          <span className="badge text-bg-secondary">{employees.length}</span>
+          <div className="d-flex align-items-center gap-2">
+            <span className="badge text-bg-secondary">{employees.length}</span>
+            {employees.length > 0 && (
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-danger"
+                onClick={handleClearAllEmployees}
+              >
+                Clear All
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="card-body">
@@ -489,6 +571,7 @@ function EmployeesPage() {
                     <th>Name</th>
                     <th>Phone</th>
                     <th>Status</th>
+                    <th>Allowed Positions</th>
                     <th>EVOC</th>
                     <th>EMT</th>
                     <th>Paramedic</th>
@@ -512,6 +595,7 @@ function EmployeesPage() {
                           {employee.isActive ? 'Active' : 'Inactive'}
                         </span>
                       </td>
+                      <td>{renderAllowedPositions(employee)}</td>
                       <td>{renderLicenseSummary(employee.evoc)}</td>
                       <td>{renderLicenseSummary(employee.emt)}</td>
                       <td>{renderLicenseSummary(employee.paramedic)}</td>

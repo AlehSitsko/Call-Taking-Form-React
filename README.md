@@ -1,153 +1,118 @@
-# Call Taking Form (React)
+# Call Taking Form React
 
-This is a React-based web application for managing non-emergency medical transport workflows, including call intake, employee management, and crew planning.
+A React-based operational support tool designed for structured call intake and basic EMS workflow organization.
 
-## 🌐 Live Demo
-👉 https://alehsitsko.github.io/Call-Taking-Form-React/
+This project started as a call-taking form, but gradually expanded into a broader internal-use workflow tool. It now includes call intake, employee records, and unit planning features that support day-to-day operational coordination.
 
----
+## Live Demo
 
-## 📦 Tech Stack
+GitHub Pages: https://alehsitsko.github.io/Call-Taking-Form-React/#/
 
-- **Frontend**: React, Bootstrap
-- **Routing**: React Router
-- **State Management**: React state + localStorage (temporary persistence)
-- **Bundler**: Vite
-- **Backend (Planned)**: Python + Flask
-- **Deployment**: GitHub Pages
+## Purpose
 
----
+The goal of this project is to reduce routine friction in EMS-related workflows by introducing structure, consistency, and basic validation into tasks that are often handled manually.
 
-## 🚀 Features
+The application is intended as a lightweight support tool, not as a replacement for core dispatch software.
 
-### 📞 Call Taking Form
-- Structured form for transport requests
-- Date of call, trip date, pickup time
-- Caller type, patient info, addresses
-- Return ride logic (Yes / No / Will Call)
-- Service level selection
-- Validation for required fields
-- Print-friendly output
-- Clear All functionality
+## Current Features
 
----
+### Call Taking Form
+- Structured call intake form
+- Required field validation
+- Print-friendly layout
+- Clear all fields
+- Return ride logic
+- Fixed price override
+- Price calculator support
 
-### 👥 Employee Management (NEW)
-- Add, edit, delete employees
-- Store employee data in localStorage
-- Track licenses:
+### Patients Page
+- Dedicated page for patient-related workflow expansion
+- Supports project modularity and future backend integration
+
+### User Manual
+- Built-in user manual page for dispatcher guidance
+- Step-by-step reference for using the form
+
+### Employees Page
+- Add and manage employee records
+- Store employee phone number, status, and notes
+- Track certifications and licenses:
+  - CPR
   - EVOC
   - EMT
   - Paramedic
-- License expiration tracking:
+- Certification status display:
   - Active
   - Expiring Soon
   - Expired
-- Automatic role detection based on licenses:
-  - Driver (requires EVOC)
-  - EMT
-  - Paramedic
-  - Assist (default role)
+  - No License
+- CPR warning logic for compliance tracking
+- Allowed position summary for each employee
 
----
-
-### 🚑 Crew Planner (NEW)
-- Loads employees from shared localStorage
-- Assign employees into crew roles
-- Role-based filtering:
-  - Driver → EVOC required
-  - EMT → EMT license
-  - Paramedic → Paramedic license
-  - Assist → any employee
-- Prevents duplicate assignment across roles
-- Displays warnings for:
-  - Expired licenses
-  - Expiring soon licenses
-
----
-
-## 🧠 Current Architecture
-
-This project now follows a basic modular structure:
-
-- **Employees Page** → Data source (CRUD + persistence)
-- **Crew Planner Page** → Data consumer (assignment logic)
-- **Call Form Page** → Operational input UI
-
-Data is currently shared using **localStorage**, acting as a temporary client-side database.
-
----
-
-## ⚠️ Limitations (Current Stage)
-
-- No backend (data stored only in browser)
-- No multi-device sync
-- No authentication yet
-- Crew assignments are not persisted
-- No scheduling system yet
-
----
-
-## 🔮 Planned Features
-
-### Crew System Upgrade
-Introduce **crew types instead of fixed roles**:
-
-- **ASSIST**
+### Unit Planner
+- Create actual ambulance units instead of abstract crews
+- Select unit type:
+  - BLS
+  - ALS
+  - ASSIST
+- Assign:
   - Driver
-  - Assist x2
+  - Medical slot (EMT or Paramedic depending on unit type)
+  - Assist 1
+  - Assist 2
+- Set truck number
+- Set unit start time
+- Add required first patient
+- Add optional next patients
+- Save planned units in localStorage
+- Edit existing units
+- Delete units
+- View compact list of unassigned active employees
+- Warning if employee is already assigned to another unit
+- Warning-only CPR compliance logic
+- Warning for expired or expiring role-related certifications
 
-- **BLS**
-  - Driver
-  - Clinical (EMT or Paramedic)
-  - Assist x2
+## Routing / Deployment Notes
 
-- **ALS**
-  - Driver
-  - Paramedic (required)
-  - Assist x2
+This project uses `HashRouter` for GitHub Pages compatibility.
 
-Crew slots will be dynamically generated based on selected crew type.
+This prevents 404 errors when refreshing direct routes such as:
+- `/employees`
+- `/crew-planner`
+- `/patients`
 
----
+Because GitHub Pages does not natively support client-side routing with `BrowserRouter`.
 
-### Backend (Flask)
-- Replace localStorage with database
-- API for:
-  - Employees
-  - Crews
-  - Call history
-- JWT authentication (admin only)
+## Tech Stack
 
----
+- React
+- React Router
+- JavaScript
+- Bootstrap
+- Vite
+- localStorage
 
-### Additional Features
-- Patient database
-- Call history tracking
-- Export (PDF / JSON)
-- Scheduling system (daily / weekly)
-- Offline / Electron version
+## Current Data Storage
 
----
+At the current stage, the project uses browser `localStorage` for:
+- employee records
+- planned units
 
-## 🛠 Setup & Development
+This is intentional for lightweight prototype behavior and frontend workflow testing.
+
+## Project Structure
 
 ```bash
-npm install
-npm run dev        # Start dev server
-npm run build      # Build project
-npm run deploy     # Deploy to GitHub Pages
+src/
+  pages/
+    CallFormPage.jsx
+    PatientsPage.jsx
+    UserManualPage.jsx
+    EmployeesPage.jsx
+    CrewPlannerPage.jsx
+  App.jsx
+  main.jsx
 
-📌 Notes
-
-This project is designed as a real-world operational tool, not just a demo.
-
-It focuses on:
-
-workflow optimization
-structured data input
-reducing dispatcher errors
-supporting real EMS operations
 👤 Author
 
 Aleh Sitsko

@@ -6,6 +6,99 @@ import React, { useEffect, useState } from 'react';
 const STORAGE_KEY = 'employees';
 
 /*
+  Separate storage key for Crew Planner units.
+  This allows us to clear saved crews when loading test employees.
+*/
+const UNITS_STORAGE_KEY = 'planned_units';
+
+/*
+  Helper to create license objects for test employees.
+*/
+const createLicense = (hasLicense, licenseName, expirationDate) => ({
+  hasLicense,
+  licenseName,
+  expirationDate,
+});
+
+/*
+  Predefined test employees for quick Crew Planner testing.
+*/
+const TEST_EMPLOYEES = [
+  {
+    id: 1001,
+    firstName: 'John',
+    lastName: 'Carter',
+    phone: '215-555-0101',
+    isActive: true,
+    notes: 'Test BLS driver / EMT',
+    cpr: createLicense(true, 'CPR', '2027-12-31'),
+    evoc: createLicense(true, 'EVOC', '2027-11-30'),
+    emt: createLicense(true, 'EMT', '2027-10-31'),
+    paramedic: createLicense(false, '', ''),
+  },
+  {
+    id: 1002,
+    firstName: 'Mike',
+    lastName: 'Dalton',
+    phone: '215-555-0102',
+    isActive: true,
+    notes: 'Test BLS EMT',
+    cpr: createLicense(true, 'CPR', '2027-12-31'),
+    evoc: createLicense(false, '', ''),
+    emt: createLicense(true, 'EMT', '2027-08-31'),
+    paramedic: createLicense(false, '', ''),
+  },
+  {
+    id: 1003,
+    firstName: 'Sarah',
+    lastName: 'Collins',
+    phone: '215-555-0103',
+    isActive: true,
+    notes: 'Test ALS medic',
+    cpr: createLicense(true, 'CPR', '2027-12-31'),
+    evoc: createLicense(false, '', ''),
+    emt: createLicense(false, '', ''),
+    paramedic: createLicense(true, 'Paramedic', '2027-07-31'),
+  },
+  {
+    id: 1004,
+    firstName: 'Victor',
+    lastName: 'Hayes',
+    phone: '215-555-0104',
+    isActive: true,
+    notes: 'Test ALS driver / medic',
+    cpr: createLicense(true, 'CPR', '2027-12-31'),
+    evoc: createLicense(true, 'EVOC', '2027-06-30'),
+    emt: createLicense(false, '', ''),
+    paramedic: createLicense(true, 'Paramedic', '2027-05-31'),
+  },
+  {
+    id: 1005,
+    firstName: 'Nina',
+    lastName: 'Brooks',
+    phone: '215-555-0105',
+    isActive: true,
+    notes: 'Test assist crew',
+    cpr: createLicense(true, 'CPR', '2027-12-31'),
+    evoc: createLicense(false, '', ''),
+    emt: createLicense(false, '', ''),
+    paramedic: createLicense(false, '', ''),
+  },
+  {
+    id: 1006,
+    firstName: 'Ethan',
+    lastName: 'Reed',
+    phone: '215-555-0106',
+    isActive: true,
+    notes: 'Test assist crew',
+    cpr: createLicense(true, 'CPR', '2027-12-31'),
+    evoc: createLicense(false, '', ''),
+    emt: createLicense(false, '', ''),
+    paramedic: createLicense(false, '', ''),
+  },
+];
+
+/*
   Default empty license object.
   This helps avoid repeating the same structure for every certification block.
 */
@@ -387,6 +480,27 @@ function EmployeesPage() {
     setEmployees([]);
     resetForm();
     localStorage.removeItem(STORAGE_KEY);
+  };
+
+  /*
+    Loads predefined test employees.
+    Also clears saved Crew Planner units to avoid broken employee references.
+  */
+  const handleLoadTestEmployees = () => {
+    const confirmed = window.confirm(
+      employees.length > 0
+        ? 'This will replace current employees and clear all planned units. Continue?'
+        : 'Load test employees and clear all planned units?'
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    setEmployees(TEST_EMPLOYEES);
+    resetForm();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(TEST_EMPLOYEES));
+    localStorage.removeItem(UNITS_STORAGE_KEY);
   };
 
   return (
@@ -778,6 +892,14 @@ function EmployeesPage() {
 
           <div className="d-flex align-items-center gap-2">
             <span className="badge text-bg-secondary">{employees.length}</span>
+
+            <button
+              type="button"
+              className="btn btn-sm btn-outline-primary"
+              onClick={handleLoadTestEmployees}
+            >
+              Load Test Crew
+            </button>
 
             {employees.length > 0 && (
               <button

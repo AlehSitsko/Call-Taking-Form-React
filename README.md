@@ -2,6 +2,11 @@
 
 A real-world operational tool designed to bring structure, consistency, and reliability to EMS call intake and coordination workflows.
 
+## 🚀 Demo Release
+
+Stable demo version available here:  
+👉 https://github.com/AlehSitsko/Call-Taking-Form-React/releases/tag/v1.0-demo
+
 ## Why this project exists
 
 This project was built based on direct experience in EMS dispatch operations, where critical decisions must be made quickly and under pressure.

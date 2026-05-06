@@ -1,120 +1,46 @@
 # Call Taking Form React
 
-A React-based operational support tool designed for structured call intake and basic EMS workflow organization.
+A real-world operational tool designed to bring structure, consistency, and reliability to EMS call intake and coordination workflows.
 
-This project started as a call-taking form, but gradually expanded into a broader internal-use workflow tool. It now includes call intake, employee records, and unit planning features that support day-to-day operational coordination.
+## Why this project exists
 
-## Live Demo
+This project was built based on direct experience in EMS dispatch operations, where critical decisions must be made quickly and under pressure.
 
-GitHub Pages: https://alehsitsko.github.io/Call-Taking-Form-React/#/
+In many cases, workflows rely on:
+- manual data entry  
+- inconsistent processes  
+- fragmented communication  
 
-## Purpose
+This leads to errors, delays, and unnecessary operational friction.
 
-The goal of this project is to reduce routine friction in EMS-related workflows by introducing structure, consistency, and basic validation into tasks that are often handled manually.
+This application was created to solve those problems by introducing:
+- structured data input  
+- workflow-driven UI  
+- validation and consistency across shifts  
 
-The application is intended as a lightweight support tool, not as a replacement for core dispatch software.
+## What this project is
 
-## Current Features
+This is not a demo project.
 
-### Call Taking Form
-- Structured call intake form
-- Required field validation
-- Print-friendly layout
-- Clear all fields
-- Return ride logic
-- Fixed price override
-- Price calculator support
+It is a **production-used internal tool** that:
+- supports dispatcher onboarding  
+- improves call intake consistency  
+- reduces human error in time-critical workflows  
 
-### Patients Page
-- Dedicated page for patient-related workflow expansion
-- Supports project modularity and future backend integration
+## Current architecture
 
-### User Manual
-- Built-in user manual page for dispatcher guidance
-- Step-by-step reference for using the form
-
-### Employees Page
-- Add and manage employee records
-- Store employee phone number, status, and notes
-- Track certifications and licenses:
-  - CPR
-  - EVOC
-  - EMT
-  - Paramedic
-- Certification status display:
-  - Active
-  - Expiring Soon
-  - Expired
-  - No License
-- CPR warning logic for compliance tracking
-- Allowed position summary for each employee
-
-### Unit Planner
-- Create actual ambulance units instead of abstract crews
-- Select unit type:
-  - BLS
-  - ALS
-  - ASSIST
-- Assign:
-  - Driver
-  - Medical slot (EMT or Paramedic depending on unit type)
-  - Assist 1
-  - Assist 2
-- Set truck number
-- Set unit start time
-- Add required first patient
-- Add optional next patients
-- Save planned units in localStorage
-- Edit existing units
-- Delete units
-- View compact list of unassigned active employees
-- Warning if employee is already assigned to another unit
-- Warning-only CPR compliance logic
-- Warning for expired or expiring role-related certifications
-
-## Routing / Deployment Notes
-
-This project uses `HashRouter` for GitHub Pages compatibility.
-
-This prevents 404 errors when refreshing direct routes such as:
-- `/employees`
-- `/crew-planner`
-- `/patients`
-
-Because GitHub Pages does not natively support client-side routing with `BrowserRouter`.
-
-## Tech Stack
-
-- React
-- React Router
-- JavaScript
+Frontend:
+- React (Vite)
 - Bootstrap
-- Vite
-- localStorage
+- Local state + localStorage
 
-## Current Data Storage
+Backend (in progress):
+- Flask API
+- SQLite/PostgreSQL (planned)
+- REST endpoints for call persistence and data management
 
-At the current stage, the project uses browser `localStorage` for:
-- employee records
-- planned units
+The project was intentionally built frontend-first to validate workflows before introducing backend complexity and handling sensitive data.
 
-This is intentional for lightweight prototype behavior and frontend workflow testing.
+## Key Features
 
-## Project Structure
-
-```bash
-src/
-  pages/
-    CallFormPage.jsx
-    PatientsPage.jsx
-    UserManualPage.jsx
-    EmployeesPage.jsx
-    CrewPlannerPage.jsx
-  App.jsx
-  main.jsx
-
-👤 Author
-
-Aleh Sitsko
-Philadelphia, PA
-GitHub: https://github.com/AlehSitsko
+...

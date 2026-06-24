@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { MdSearch, MdDeleteOutline, MdFilterList } from 'react-icons/md';
+import { MdSearch, MdDeleteOutline } from 'react-icons/md';
 import { getCalls, setCalls, SERVICE_LEVEL_BADGE } from '../data/demoData';
 import DetailsDrawer from '../components/ui/DetailsDrawer';
 import ConfirmModal from '../components/ui/ConfirmModal';

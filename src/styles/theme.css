@@ -10,7 +10,6 @@
   --ems-bg:        #f5f7fb;
   --ems-surface:   #ffffff;
   --ems-surface-2: #f8fafd;
-  --ems-surface-3: #eef2f8;
   --ems-border:    #e4e8f0;
   --ems-border-2:  #e7edf6;
 
@@ -56,7 +55,6 @@
   --ems-board-border-light: #dde8f2;
   --ems-board-text:         #1a202c;
   --ems-board-text-muted:   #64748b;
-  --ems-board-text-dark:    #2d3748;
   --ems-board-tab-inactive: #4a5568;
 }
 
@@ -66,7 +64,6 @@
   --ems-bg:        #0d1117;
   --ems-surface:   #161b22;
   --ems-surface-2: #1c2333;
-  --ems-surface-3: #1e2535;
   --ems-border:    #30363d;
   --ems-border-2:  #21262d;
 
@@ -106,7 +103,6 @@
   --ems-board-border-light: #1e2a3a;
   --ems-board-text:         #e2e8f0;
   --ems-board-text-muted:   #6c757d;
-  --ems-board-text-dark:    #475569;
   --ems-board-tab-inactive: #334155;
 }
 

@@ -4,7 +4,7 @@ import {
   MdPhone, MdPeople, MdHistory, MdAirportShuttle, MdGroups,
   MdCalendarMonth, MdMenuBook, MdRefresh, MdDeleteOutline,
   MdOpenInNew, MdStorage, MdSpeed, MdSecurity, MdNotifications,
-  MdCalculate, MdArrowForward,
+  MdCalculate,
 } from 'react-icons/md';
 import { loadDemoData, resetDemoData, clearDemoData, isDemoLoaded, getCalls, getPatients, getEmployees, getUnits } from '../data/demoData';
 import ConfirmModal from '../components/ui/ConfirmModal';

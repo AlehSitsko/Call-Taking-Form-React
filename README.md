@@ -16,11 +16,11 @@ This repository is a public portfolio demo of the [ems-workflow-system](https://
 
 | Module | Description |
 |---|---|
-| **Dashboard** | Key metrics, demo data controls, quick navigation |
+| **Dashboard** | Key metrics, demo data controls, quick navigation, trip price calculator |
 | **Call Intake** | Guided 3-step wizard + Classic mode, patient search, quality score, return ride |
 | **Patients** | Search, create with duplicate detection, edit, details drawer |
 | **Calls History** | Filter by date/status/search, quality score badges, delete |
-| **Dispatch Preview** | Unit assignment board, manual assign/unassign, unit status updates |
+| **Dispatch Preview** | Table layout matching production board — StatusPill, unit type badges, pending-call queue, click-to-assign, sub-row call details with Done/Unassign, status change select |
 | **Employees** | Staff cards, certification tracking (CPR/EVOC/EMT/Paramedic), expiry alerts |
 | **Crew Planner** | Daily unit rosters with cert validation warnings |
 | **User Manual** | Interactive accordion documentation |
@@ -33,6 +33,18 @@ Each saved call receives a quality score (0–100) based on field completeness:
 
 - **−12 pts** per missing critical field (patient, addresses, dates, service level, caller type)
 - **−4 pts** per missing optional field (phone, appointment time, notes)
+
+---
+
+## Trip Price Calculator
+
+The Dashboard includes an interactive price estimator:
+
+- **Base Price** — flat transport fee
+- **Crew Size** — 1–4 crew members; each above 2 adds a $50 surcharge
+- **Mileage + Rate per Mile** — calculates the mileage fee
+- **Return Ride** — doubles the total when checked
+- Shows full cost breakdown: base · mileage fee · crew surcharge · subtotal · **total**
 
 ---
 

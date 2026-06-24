@@ -35,21 +35,40 @@ function StatPill({ label, value, variant = 'neutral' }) {
   );
 }
 
-const PRICE_BASE = { BLS: 450, ALS: 750, Stretcher: 380, Wheelchair: 200 };
-const MILEAGE_RATE = 12;  // $ per mile over 10 base miles
-const BASE_MILES = 10;
-
 function PriceCalculator() {
-  const [svc, setSvc]    = useState('BLS');
-  const [miles, setMiles] = useState(10);
-  const [ret, setRet]    = useState(false);
-  const [wait, setWait]  = useState(0);  // extra wait hours
+  const [basePrice, setBasePrice] = useState('');
+  const [crewSize, setCrewSize]   = useState('2');
+  const [mileage, setMileage]     = useState('');
+  const [ratePerMile, setRatePerMile] = useState('');
+  const [ret, setRet]             = useState(false);
+  const [result, setResult]       = useState(null);
 
-  const base     = PRICE_BASE[svc] || 450;
-  const mileage  = Math.max(0, miles - BASE_MILES) * MILEAGE_RATE;
-  const waitFee  = wait * 35;
-  const subtotal = base + mileage + waitFee;
-  const total    = ret ? subtotal * 2 : subtotal;
+  function calculate() {
+    const base  = parseFloat(basePrice)    || 0;
+    const miles = parseFloat(mileage)      || 0;
+    const rate  = parseFloat(ratePerMile)  || 0;
+    const crew  = parseInt(crewSize)       || 2;
+
+    const mileageFee  = miles * rate;
+    const crewSurcharge = crew > 2 ? (crew - 2) * 50 : 0;
+    const subtotal    = base + mileageFee + crewSurcharge;
+    const total       = ret ? subtotal * 2 : subtotal;
+    setResult({ base, mileageFee, crewSurcharge, subtotal, total, miles, rate, crew });
+  }
+
+  const field = (label, value, setter, placeholder, type = 'number') => (
+    <div>
+      <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--ems-text)', marginBottom: 6 }}>{label}</label>
+      <input
+        type={type}
+        min="0"
+        value={value}
+        onChange={e => { setter(e.target.value); setResult(null); }}
+        placeholder={placeholder}
+        className="form-control"
+      />
+    </div>
+  );
 
   const row = (label, val, muted) => (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '5px 0', borderBottom: '1px solid var(--ems-border)' }}>
@@ -62,97 +81,71 @@ function PriceCalculator() {
     <div style={{ background: 'var(--ems-surface)', border: '1px solid var(--ems-border)', borderRadius: 8, padding: '18px 20px', marginBottom: 16 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
         <MdCalculate style={{ fontSize: 18, color: 'var(--ems-primary)' }} />
-        <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--ems-text)' }}>Trip Price Calculator</span>
+        <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--ems-text)' }}>Price Calculator</span>
         <span style={{ fontSize: 11, color: 'var(--ems-muted)', marginLeft: 4 }}>Demo rates — for illustration only</span>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-        {/* Controls */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {/* Service level */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+        {/* Inputs */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          {field('Base Price ($)', basePrice, setBasePrice, 'e.g. 450')}
+
           <div>
-            <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--ems-muted)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Service Level</div>
-            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-              {Object.keys(PRICE_BASE).map(k => (
-                <button
-                  key={k}
-                  onClick={() => setSvc(k)}
-                  style={{
-                    padding: '5px 14px', borderRadius: 20, fontSize: 12, fontWeight: 700, cursor: 'pointer', transition: 'all 0.12s',
-                    background: svc === k ? 'var(--ems-primary)' : 'var(--ems-surface-2)',
-                    color: svc === k ? '#fff' : 'var(--ems-muted)',
-                    border: svc === k ? '1px solid var(--ems-primary)' : '1px solid var(--ems-border)',
-                  }}
-                >{k}</button>
-              ))}
-            </div>
+            <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--ems-text)', marginBottom: 6 }}>Crew Size</label>
+            <select
+              className="form-control"
+              value={crewSize}
+              onChange={e => { setCrewSize(e.target.value); setResult(null); }}
+            >
+              {[1,2,3,4].map(n => <option key={n} value={n}>{n}</option>)}
+            </select>
           </div>
 
-          {/* Miles */}
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-              <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--ems-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Distance</span>
-              <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--ems-text)' }}>{miles} mi</span>
-            </div>
+          {field('Mileage (miles)', mileage, setMileage, 'e.g. 15')}
+          {field('Rate per Mile ($)', ratePerMile, setRatePerMile, 'e.g. 12')}
+
+          <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
             <input
-              type="range" min={1} max={60} value={miles}
-              onChange={e => setMiles(Number(e.target.value))}
-              style={{ width: '100%', accentColor: 'var(--ems-primary)' }}
+              type="checkbox"
+              checked={ret}
+              onChange={e => { setRet(e.target.checked); setResult(null); }}
+              style={{ accentColor: 'var(--ems-primary)', width: 15, height: 15 }}
             />
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: 'var(--ems-subtle)', marginTop: 2 }}>
-              <span>1 mi</span><span>60 mi</span>
-            </div>
-          </div>
-
-          {/* Wait time */}
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-              <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--ems-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Wait time</span>
-              <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--ems-text)' }}>{wait}h</span>
-            </div>
-            <input
-              type="range" min={0} max={4} step={0.5} value={wait}
-              onChange={e => setWait(Number(e.target.value))}
-              style={{ width: '100%', accentColor: 'var(--ems-primary)' }}
-            />
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: 'var(--ems-subtle)', marginTop: 2 }}>
-              <span>0h</span><span>4h</span>
-            </div>
-          </div>
-
-          {/* Return ride toggle */}
-          <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', padding: '8px 12px', background: ret ? 'var(--ems-primary-soft)' : 'var(--ems-surface-2)', border: `1px solid ${ret ? 'var(--ems-primary)' : 'var(--ems-border)'}`, borderRadius: 8, transition: 'all 0.12s' }}>
-            <input type="checkbox" checked={ret} onChange={e => setRet(e.target.checked)} style={{ accentColor: 'var(--ems-primary)', width: 15, height: 15 }} />
-            <div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--ems-text)' }}>Return ride</div>
-              <div style={{ fontSize: 11, color: 'var(--ems-muted)' }}>Round trip — charges subtotal twice</div>
-            </div>
+            <span style={{ fontSize: 13, color: 'var(--ems-text)' }}>Return Ride (Round-Trip)</span>
           </label>
+
+          <button className="btn-ems btn-primary" onClick={calculate} style={{ alignSelf: 'flex-start' }}>
+            <MdCalculate /> Calculate Price
+          </button>
         </div>
 
-        {/* Price breakdown */}
-        <div style={{ background: 'var(--ems-surface-2)', border: '1px solid var(--ems-border)', borderRadius: 8, padding: '14px 16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-          <div>
-            <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--ems-muted)', marginBottom: 10 }}>Price Breakdown</div>
-            {row(`Base rate (${svc})`, `$${base.toFixed(2)}`)}
-            {row(`Mileage (${Math.max(0, miles - BASE_MILES)} mi × $${MILEAGE_RATE})`, `$${mileage.toFixed(2)}`, mileage === 0)}
-            {row(`Wait fee (${wait}h × $35)`, `$${waitFee.toFixed(2)}`, waitFee === 0)}
-            {ret && row('Return ride (×2)', `$${subtotal.toFixed(2)}`, true)}
-          </div>
-
-          <div style={{ marginTop: 14, paddingTop: 14, borderTop: '2px solid var(--ems-border)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--ems-text)' }}>Total estimate</span>
-              <span style={{ fontSize: 26, fontWeight: 800, color: 'var(--ems-primary)', fontVariantNumeric: 'tabular-nums' }}>
-                ${total.toFixed(2)}
-              </span>
+        {/* Result */}
+        <div style={{ background: 'var(--ems-surface-2)', border: '1px solid var(--ems-border)', borderRadius: 8, padding: '14px 16px', display: 'flex', flexDirection: 'column', justifyContent: result ? 'space-between' : 'center', minHeight: 220 }}>
+          {!result ? (
+            <div style={{ textAlign: 'center', color: 'var(--ems-subtle)', fontSize: 13 }}>
+              <div style={{ fontSize: 28, marginBottom: 8, opacity: 0.3 }}>🧮</div>
+              Fill in the fields and click<br /><strong style={{ color: 'var(--ems-muted)' }}>Calculate Price</strong>
             </div>
-            {ret && (
-              <div style={{ fontSize: 11, color: 'var(--ems-muted)', marginTop: 4 }}>
-                ${subtotal.toFixed(2)} × 2 legs
+          ) : (
+            <>
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--ems-muted)', marginBottom: 10 }}>Price Breakdown</div>
+                {row('Base price', `$${result.base.toFixed(2)}`)}
+                {row(`Mileage (${result.miles} mi × $${result.rate})`, `$${result.mileageFee.toFixed(2)}`, result.mileageFee === 0)}
+                {result.crewSurcharge > 0 && row(`Extra crew (${result.crew - 2} × $50)`, `$${result.crewSurcharge.toFixed(2)}`)}
+                {ret && row('Return ride (×2)', `$${result.subtotal.toFixed(2)}`, true)}
               </div>
-            )}
-          </div>
+              <div style={{ marginTop: 14, paddingTop: 14, borderTop: '2px solid var(--ems-border)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--ems-text)' }}>Total estimate</span>
+                  <span style={{ fontSize: 26, fontWeight: 800, color: 'var(--ems-primary)', fontVariantNumeric: 'tabular-nums' }}>
+                    ${result.total.toFixed(2)}
+                  </span>
+                </div>
+                {ret && <div style={{ fontSize: 11, color: 'var(--ems-muted)', marginTop: 4 }}>${result.subtotal.toFixed(2)} × 2 legs</div>}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

@@ -667,3 +667,123 @@ select.form-control {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--ems-border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--ems-muted); }
+
+/* ── Mobile hamburger button ──────────────────────────────── */
+
+.topbar-hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ems-text);
+  padding: 4px 6px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.topbar-hamburger:hover { background: var(--ems-surface-2); }
+
+/* ── Sidebar overlay (mobile) ─────────────────────────────── */
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 199;
+}
+
+/* ── Responsive breakpoints ───────────────────────────────── */
+
+@media (max-width: 768px) {
+  /* Show hamburger, hide topbar-badge on small screens */
+  .topbar-hamburger { display: flex; }
+  .topbar-badge { display: none; }
+
+  /* Sidebar becomes a fixed drawer */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35);
+  }
+  .sidebar--open {
+    transform: translateX(0);
+  }
+
+  /* Overlay visible when sidebar is open */
+  .sidebar-overlay {
+    display: block;
+  }
+
+  /* Content takes full width */
+  .app-content {
+    padding: 16px 12px;
+  }
+
+  /* Page header stacks on small screens */
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  /* Stats row wraps */
+  .stats-row {
+    flex-wrap: wrap;
+  }
+
+  /* Module grid: 2 columns minimum */
+  .module-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 8px;
+  }
+
+  /* Dispatch board: make the table scrollable */
+  .ems-board-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Dispatch board left panel full-width on mobile */
+  .ems-board-left {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--ems-board-border);
+  }
+
+  /* Board layout stacks vertically */
+  .ems-board-body {
+    flex-direction: column !important;
+  }
+
+  /* Cards in calls history/patients don't overflow */
+  .ems-card {
+    overflow: hidden;
+  }
+
+  /* Drawers full-width on mobile */
+  .details-drawer {
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+
+  /* Wizards/forms: remove side padding */
+  .wizard-card, .form-section {
+    padding: 14px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .topbar { padding: 0 12px; gap: 8px; }
+  .app-content { padding: 12px 10px; }
+  .page-title { font-size: 18px; }
+  .module-grid { grid-template-columns: 1fr 1fr; }
+}

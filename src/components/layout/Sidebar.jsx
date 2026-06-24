@@ -32,9 +32,9 @@ const NAV = [
   },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, onClose }) {
   return (
-    <nav className="sidebar">
+    <nav className={`sidebar${isOpen ? ' sidebar--open' : ''}`}>
       {NAV.map(({ group, items }) => (
         <div key={group} className="sidebar-group">
           <div className="sidebar-group-label">{group}</div>
@@ -44,6 +44,7 @@ export default function Sidebar() {
               to={to}
               end={end}
               className={({ isActive }) => `sidebar-link${isActive ? ' active' : ''}`}
+              onClick={onClose}
             >
               <Icon className="sidebar-icon" />
               {label}

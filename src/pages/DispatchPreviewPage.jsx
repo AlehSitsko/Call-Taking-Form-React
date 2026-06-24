@@ -360,10 +360,10 @@ export default function DispatchPreviewPage() {
       )}
 
       {/* Main body */}
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+      <div className="ems-board-body" style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
 
         {/* Left: call queue */}
-        <div style={{
+        <div className="ems-board-left" style={{
           width: 270, flexShrink: 0,
           background: 'var(--ems-board-bg-left)',
           borderRight: '1px solid var(--ems-board-border)',
@@ -433,7 +433,7 @@ export default function DispatchPreviewPage() {
         </div>
 
         {/* Right: units table */}
-        <div style={{ flex: 1, overflow: 'auto', background: 'var(--ems-board-bg)' }}>
+        <div className="ems-board-table-wrap" style={{ flex: 1, overflow: 'auto', background: 'var(--ems-board-bg)' }}>
           {dayUnits.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '64px 24px', color: 'var(--ems-board-tab-inactive)' }}>
               <div style={{ fontSize: 32, marginBottom: 12, opacity: 0.3 }}>🚑</div>

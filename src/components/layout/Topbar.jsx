@@ -1,12 +1,15 @@
-import { MdLightMode, MdDarkMode } from 'react-icons/md';
+import { MdLightMode, MdDarkMode, MdMenu } from 'react-icons/md';
 import { useTheme } from '../../hooks/useTheme';
 
-export default function Topbar() {
+export default function Topbar({ onMenuToggle }) {
   const { isDark, toggle } = useTheme();
 
   return (
     <header className="topbar">
-      {/* Brand matches main project style */}
+      <button className="topbar-hamburger" onClick={onMenuToggle} aria-label="Open menu">
+        <MdMenu style={{ fontSize: 22 }} />
+      </button>
+
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <div style={{
           width: 34, height: 34, borderRadius: 10,
@@ -31,7 +34,6 @@ export default function Topbar() {
 
       <span className="topbar-badge">localStorage · No backend</span>
 
-      {/* Theme toggle */}
       <button
         onClick={toggle}
         title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}

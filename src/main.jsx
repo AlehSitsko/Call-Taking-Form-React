@@ -4,6 +4,9 @@ import './styles/theme.css'
 import './index.css'
 import App from './App.jsx'
 
+// Apply saved theme before first paint to avoid flash
+document.documentElement.setAttribute('data-theme', localStorage.getItem('ems_theme') || 'dark');
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />

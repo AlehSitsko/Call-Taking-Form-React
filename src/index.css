@@ -1,10 +1,22 @@
-/* theme.css loaded first in main.jsx — this file handles any remaining overrides */
+/* theme.css is loaded first in main.jsx */
+/* This file handles only Bootstrap remnant cleanup */
 
-/* Ensure Bootstrap doesn't override our dark background */
-body {
-  background-color: var(--ems-bg) !important;
-  color: var(--ems-text) !important;
+/* Remove any Bootstrap navbar if residual HTML exists */
+.navbar { display: none !important; }
+
+/* Ensure textarea respects our form-control sizing */
+textarea.form-control {
+  padding: 8px 11px;
+  resize: vertical;
 }
 
-/* Remove Bootstrap navbar if any remnant exists */
-.navbar { display: none !important; }
+/* Input date/time dark mode fix — system color-scheme */
+input[type="date"],
+input[type="time"] {
+  color-scheme: light;
+}
+
+[data-theme="dark"] input[type="date"],
+[data-theme="dark"] input[type="time"] {
+  color-scheme: dark;
+}

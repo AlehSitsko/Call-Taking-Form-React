@@ -3,6 +3,7 @@
 A fully client-side showcase of the **EMS Workflow System** — a production application for managing emergency medical transport operations.
 
 **Live Demo:** https://alehsitsko.github.io/Call-Taking-Form-React/
+**Developer Portfolio:** https://alehsitsko.dev
 
 ---
 

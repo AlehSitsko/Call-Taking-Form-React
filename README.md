@@ -1,51 +1,91 @@
-# Call Taking Form React
+# EMS Workflow System — Demo
 
-A real-world operational tool designed to bring structure, consistency, and reliability to EMS call intake and coordination workflows.
+A fully client-side showcase of the **EMS Workflow System** — a production application for managing emergency medical transport operations.
 
-## 🚀 Demo Release
+**Live Demo:** https://alehsitsko.github.io/Call-Taking-Form-React/
 
-Stable demo version available here:  
-👉 https://github.com/AlehSitsko/Call-Taking-Form-React/releases/tag/v1.0-demo
+---
 
-## Why this project exists
+## What This Is
 
-This project was built based on direct experience in EMS dispatch operations, where critical decisions must be made quickly and under pressure.
+This repository is a public portfolio demo of the [ems-workflow-system](https://github.com/AlehSitsko/ems-workflow-system) — a full-stack production application. All demo data is stored in the browser's `localStorage`. No server, no database, no login required.
 
-In many cases, workflows rely on:
-- manual data entry  
-- inconsistent processes  
-- fragmented communication  
+---
 
-This leads to errors, delays, and unnecessary operational friction.
+## Features
 
-This application was created to solve those problems by introducing:
-- structured data input  
-- workflow-driven UI  
-- validation and consistency across shifts  
+| Module | Description |
+|---|---|
+| **Dashboard** | Key metrics, demo data controls, quick navigation |
+| **Call Intake** | Guided 3-step wizard + Classic mode, patient search, quality score, return ride |
+| **Patients** | Search, create with duplicate detection, edit, details drawer |
+| **Calls History** | Filter by date/status/search, quality score badges, delete |
+| **Dispatch Preview** | Unit assignment board, manual assign/unassign, unit status updates |
+| **Employees** | Staff cards, certification tracking (CPR/EVOC/EMT/Paramedic), expiry alerts |
+| **Crew Planner** | Daily unit rosters with cert validation warnings |
+| **User Manual** | Interactive accordion documentation |
 
-## What this project is
+---
 
-This is not a demo project.
+## Call Quality Score
 
-It is a **production-used internal tool** that:
-- supports dispatcher onboarding  
-- improves call intake consistency  
-- reduces human error in time-critical workflows  
+Each saved call receives a quality score (0–100) based on field completeness:
 
-## Current architecture
+- **−12 pts** per missing critical field (patient, addresses, dates, service level, caller type)
+- **−4 pts** per missing optional field (phone, appointment time, notes)
 
-Frontend:
-- React (Vite)
-- Bootstrap
-- Local state + localStorage
+---
 
-Backend (in progress):
-- Flask API
-- SQLite/PostgreSQL (planned)
-- REST endpoints for call persistence and data management
+## Tech Stack
 
-The project was intentionally built frontend-first to validate workflows before introducing backend complexity and handling sensitive data.
+| Layer | Technology |
+|---|---|
+| UI | React 19 + Vite 7 |
+| Routing | react-router-dom v7 (HashRouter for GitHub Pages) |
+| Icons | react-icons (Material Design) |
+| Styling | CSS Custom Properties design system (no UI framework) |
+| Storage | localStorage (no backend) |
+| Deploy | gh-pages |
 
-## Key Features
+---
 
-...
+## Production System
+
+The full backend system (`ems-workflow-system`) includes:
+
+- **Flask + SQLAlchemy + PostgreSQL** REST API
+- **17 database indexes** + N+1 query elimination via `joinedload()`
+- **~184 req/s** throughput, P95 latency 171ms
+- **Alembic** migrations
+- **Audit logging**, notification events, per-user settings
+- **Role-based access control**
+
+---
+
+## Run Locally
+
+```bash
+git clone https://github.com/AlehSitsko/Call-Taking-Form-React.git
+cd Call-Taking-Form-React
+npm install
+npm run dev
+```
+
+## Deploy to GitHub Pages
+
+```bash
+npm run deploy
+```
+
+---
+
+## Demo Data
+
+Click **Load Demo Data** on the Dashboard to populate the app with:
+
+- 6 employees (EMTs, Paramedics, Drivers) with varied certifications
+- 5 patients with insurance and address info
+- 4 calls across today/yesterday/tomorrow
+- 2 units for today's shift
+
+Data can be reset or cleared at any time from the Dashboard.

@@ -1,31 +1,10 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+/* theme.css loaded first in main.jsx — this file handles any remaining overrides */
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html,
-body,
-#root {
-  width: 100%;
-  min-width: 320px;
-  margin: 0;
-  padding: 0;
-}
-
+/* Ensure Bootstrap doesn't override our dark background */
 body {
-  min-height: 100vh;
+  background-color: var(--ems-bg) !important;
+  color: var(--ems-text) !important;
 }
 
-a {
-  text-decoration: none;
-}
+/* Remove Bootstrap navbar if any remnant exists */
+.navbar { display: none !important; }
